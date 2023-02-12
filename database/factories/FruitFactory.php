@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Validation\Rules\Unique;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Fruit>
@@ -25,7 +26,7 @@ class FruitFactory extends Factory
 
         return [
             //'name' => $faker->fruitName(),
-            'name' => fake()->randomElement($fruits),
+            'name' => fake()->Unique()->randomElement($fruits),
             'color' => fake()->colorName(),
             'taste' => fake()->randomElement($taste),
             'weight' => fake()->numberBetween(1, 6),

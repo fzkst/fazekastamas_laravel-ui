@@ -13,7 +13,7 @@ class StoreOperaRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreOperaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required | string | max:100',
+            'country' => 'required | string | max:100',
+            'city' => 'required | string | max: 100',
+            'const_time' => 'required | date',
+            'seats_count' => 'required | integer'
         ];
     }
 }

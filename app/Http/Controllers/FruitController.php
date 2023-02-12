@@ -15,7 +15,8 @@ class FruitController extends Controller
      */
     public function index()
     {
-        //
+        $fruits = Fruit::all();
+        return view('pages/fruits/index', compact('fruits'));
     }
 
     /**
@@ -25,7 +26,7 @@ class FruitController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.fruits.create');
     }
 
     /**
@@ -36,7 +37,10 @@ class FruitController extends Controller
      */
     public function store(StoreFruitRequest $request)
     {
-        //
+        $fruit = new Fruit();
+        $fruit->fill($request->all());
+        $fruit->save();
+        return redirect('success')->with('message', "Sikeresen hozzáadva!");
     }
 
     /**
@@ -45,9 +49,13 @@ class FruitController extends Controller
      * @param  \App\Models\Fruit  $fruit
      * @return \Illuminate\Http\Response
      */
-    public function show(Fruit $fruit)
+    public function show($id)
     {
-        //
+        $fruit = Fruit::find($id);
+        if (is_null($fruit)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található gyümölcs!");
+        }
+        return view('pages.fruits.show', compact('fruit'));
     }
 
     /**
@@ -56,9 +64,13 @@ class FruitController extends Controller
      * @param  \App\Models\Fruit  $fruit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Fruit $fruit)
+    public function edit($id)
     {
-        //
+        $fruit = Fruit::find($id);
+        if (is_null($fruit)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található gyümölcs!");
+        }
+        return view('pages.fruits.edit', compact('fruit'));
     }
 
     /**
@@ -68,9 +80,19 @@ class FruitController extends Controller
      * @param  \App\Models\Fruit  $fruit
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateFruitRequest $request, Fruit $fruit)
+    public function update(UpdateFruitRequest $request, $id)
     {
-        //
+        $fruit = Fruit::find($id);
+        if (is_null($fruit)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található gyümölcs!");
+        }
+        $fruit->name = $request->input('name');
+        $fruit->color = $request->input('color');
+        $fruit->taste = $request->input('taste');
+        $fruit->weight = $request->input('weight');
+        $fruit->purch_date = $request->input('purch_date');
+        $fruit->update();
+        return redirect('success')->with('message', "A gyümölcs módosítása sikeres!");
     }
 
     /**
@@ -79,8 +101,13 @@ class FruitController extends Controller
      * @param  \App\Models\Fruit  $fruit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Fruit $fruit)
+    public function destroy($id)
     {
-        //
+        $fruit = Fruit::find($id);
+        if (is_null($fruit)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található gyümölcs!");
+        }
+        $fruit->delete();
+        return redirect('success')->with('message', "A gyümölcs törlése sikeres!");
     }
 }

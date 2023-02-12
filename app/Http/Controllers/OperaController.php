@@ -15,7 +15,8 @@ class OperaController extends Controller
      */
     public function index()
     {
-        //
+        $operas = Opera::all();
+        return view('pages/operas/index', compact('operas'));
     }
 
     /**
@@ -25,7 +26,7 @@ class OperaController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.operas.create');
     }
 
     /**
@@ -36,7 +37,10 @@ class OperaController extends Controller
      */
     public function store(StoreOperaRequest $request)
     {
-        //
+        $opera = new Opera();
+        $opera->fill($request->all());
+        $opera->save();
+        return redirect('success')->with('message', "Sikeresen hozzáadva!");
     }
 
     /**
@@ -45,9 +49,13 @@ class OperaController extends Controller
      * @param  \App\Models\Opera  $opera
      * @return \Illuminate\Http\Response
      */
-    public function show(Opera $opera)
+    public function show($id)
     {
-        //
+        $opera = Opera::find($id);
+        if (is_null($opera)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található opera!");
+        }
+        return view('pages.operas.show', compact('opera'));
     }
 
     /**
@@ -56,9 +64,13 @@ class OperaController extends Controller
      * @param  \App\Models\Opera  $opera
      * @return \Illuminate\Http\Response
      */
-    public function edit(Opera $opera)
+    public function edit($id)
     {
-        //
+        $opera = Opera::find($id);
+        if (is_null($opera)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található gyümölcs!");
+        }
+        return view('pages.operas.edit', compact('opera'));
     }
 
     /**
@@ -68,9 +80,19 @@ class OperaController extends Controller
      * @param  \App\Models\Opera  $opera
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOperaRequest $request, Opera $opera)
+    public function update(UpdateOperaRequest $request, $id)
     {
-        //
+        $opera = Opera::find($id);
+        if (is_null($opera)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található opera!");
+        }
+        $opera->name = $request->input('name');
+        $opera->country = $request->input('country');
+        $opera->city = $request->input('city');
+        $opera->const_time = $request->input('const_time');
+        $opera->seats_count = $request->input('seats_count');
+        $opera->update();
+        return redirect('success')->with('message', "Az opera módosítása sikeres!");
     }
 
     /**
@@ -79,8 +101,13 @@ class OperaController extends Controller
      * @param  \App\Models\Opera  $opera
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Opera $opera)
+    public function destroy($id)
     {
-        //
+        $opera = Opera::find($id);
+        if (is_null($opera)){
+            return redirect('danger')->with('message', "Ilyen azonosítóval nem található opera!");
+        }
+        $opera->delete();
+        return redirect('success')->with('message', "Az opera törlése sikeres!");
     }
 }

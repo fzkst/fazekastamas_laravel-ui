@@ -22,7 +22,7 @@ class OperaFactory extends Factory
 
 
         return [
-            'name' => fake()->randomElement($operas),
+            'name' => fake()->unique()->randomElement($operas),
             'country' => fake()->country(),
             'city' => fake()->city(),
             'const_time' => fake()->dateTimeBetween('-150 years', '-50 years')->format('Y-m-d'),

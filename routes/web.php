@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FruitController;
+use App\Http\Controllers\OperaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
+   return view('home');
 });
+
+Route::get('success', function () {
+    return view('errors/success');
+});
+
+Route::get('danger', function () {
+    return view('errors/danger');
+});
+
+Route::resource('fruits', FruitController::class);
+
+Route::resource('operas', OperaController::class);

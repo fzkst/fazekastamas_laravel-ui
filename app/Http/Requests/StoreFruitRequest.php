@@ -13,7 +13,7 @@ class StoreFruitRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreFruitRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required | string | max:100',
+            'color' => 'required | string | max:191',
+            'taste' => 'required | string | max: 191',
+            'weight' => 'required | integer',
+            'purch_date' => 'required | date'
         ];
     }
 }
